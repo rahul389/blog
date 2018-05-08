@@ -1,0 +1,70 @@
+<!doctype html >
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title> Microservices App </title>
+
+</head>
+
+<body>
+
+<div id="dvTable">
+
+    <script>
+        var request = new XMLHttpRequest();
+
+        request.open('GET', 'http://localhost:8000/user', true);
+        request.onload = function () {
+
+            // Begin accessing JSON data here
+            var
+                data = JSON.parse(this.response);
+
+            if (request.status >= 200 && request.status < 400) {
+                var
+                    users = new Array();
+                users.push(["User Id", "Name", "Email", "Mobile", "Address"]);
+                data.forEach(user = > {
+                    users.push([user.id, user.name, user.email, user.mobile, user.address]);
+            })
+                ;
+//Create a HTML Table element.
+                var table = document.createElement("TABLE");
+                table.border = "1";
+                var columnCount = users[0].length;
+                console.log(users);
+                var row = table.insertRow(-1);
+                for (var i = 0; i < columnCount; i++) {
+                    var
+                        headerCell = document.createElement("TH");
+                    headerCell.innerHTML = users[0][i];
+                    row.appendChild(headerCell);
+                }
+
+                for (var i = 1; i < users.length; i++) {
+                    row = table.insertRow(-1);
+                    for (var j = 0; j < columnCount; j++) {
+                        var
+                            cell = row.insertCell(-1);
+                        cell.innerHTML = users[i][j];
+                    }
+                }
+
+                var dvTable = document.getElementById("dvTable");
+                dvTable.innerHTML = "";
+                dvTable.appendChild(table);
+            } else {
+                console.log('error');
+            }
+        }
+
+        request.send();
+
+
+    </script>
+</body>
+
+</html>
