@@ -1,0 +1,100 @@
+
+<!doctype html >
+<html lang = "en" >
+
+<head >
+  <meta charset = "utf-8" >
+  <meta name = "viewport" content = "width=device-width, initial-scale=1.0" >
+
+  <title > Microservices App </title >
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+<!-- jQuery library -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+<!-- Latest compiled JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head >
+
+<body >
+ <button type="button" id="myButton" class="float-left btn btn-primary">ADD</button>
+<div class="row">
+<div class="col-sm-4"></div>
+<div class="col-sm-6">
+<div id = "dvTable" ></div>
+</div>
+<div>	
+
+  <script >
+var request = new XMLHttpRequest();
+
+request . open('GET', 'http://localhost:8000/user', true);
+request . onload = function () {
+
+    // Begin accessing JSON data here
+    var data = JSON . parse(this . response);
+
+    if (request . status >= 200 && request . status < 400) {
+        var users = new Array();
+	users . push(["User Id", "Name", "Email", "Mobile", "Address","Action"]);	
+    	data .forEach(user => {
+		var url = "http://localhost:8000/user/"+user.id;
+		
+console.log(url);
+            users . push([user . id, user . name, user . email, user . mobile, user . address,
+'<button type="submit" onclick="deleteData('+user.id+')">Delete</button>']);
+        });
+//Create a HTML Table element.
+    var table = document . createElement("TABLE");
+    table . border = "1";
+    var columnCount = users[0] . length;
+    var row = table . insertRow(-1);
+	for (var i = 0; i < columnCount; i++) {
+            var
+            headerCell = document . createElement("TH");
+            headerCell . innerHTML = users[0][i];
+            row . appendChild(headerCell);
+        }
+
+	for (var i = 1; i < users . length; i++) {
+            row = table . insertRow(-1);
+            for (var j = 0; j < columnCount; j++) {
+                var
+                cell = row . insertCell(-1);
+                cell . innerHTML = users[i][j];
+            }
+    	}
+ 
+    var dvTable = document . getElementById("dvTable");
+    dvTable . innerHTML = "";
+    dvTable . appendChild(table);
+       } else {
+        console . log('error');
+       }
+}
+
+request . send();
+
+
+function deleteData(userId) {
+var body = "ghjk";- m
+ $.ajax({
+               type: "DELETE",
+	data: JSON.stringify(body),
+               url: "http://localhost:8000/user/7",
+               contentType: "application/json"
+           });
+}
+
+
+document.getElementById("myButton").onclick = function () {
+alert('sdf');
+                location.href = "add.html";
+            };
+</script >
+
+
+</body >
+
+</html >
